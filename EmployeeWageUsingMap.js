@@ -1,3 +1,4 @@
+//UC8
 const IS_PART_TIME = 1;
 const IS_FULL_TIME = 2;
 const PART_TIME_HOURS = 4;
@@ -7,6 +8,12 @@ const NUM_OF_WORKING_DAYS = 20;
 const MAX_HRS_IN_MONTH = 160;
 let empDailyWageArr = new Array();
 let empDailyWageMap = new Map();
+
+//UC9
+let empDailyHrsMap = new Map();
+let fullWorkingDays = new Array();
+let partWorkingDays = new Array();
+let nonWorkingDays = new Array();
 
 function getWorkingHours(empCheck) {
     switch (empCheck) {
@@ -106,3 +113,39 @@ function totalWagesMap(dailyWage) {
 }
 Array.from(empDailyWageMap.values()).map(totalWagesMap)
 console.log("Total wage using map method :" + totalWagesUsingMap);
+
+
+//9A total wage and total hours worked
+let findTotal = (totalWage, dailyWage) => {
+    return totalWage += dailyWage;
+}
+
+console.log("Total Wage using Arrow function (Using Reduce) :"
+    + Array.from(empDailyWageMap.values())
+        .reduce(findTotal, 0));
+
+console.log("Total Wage using Arrow function (Using Filter) :"
+    + Array.from(empDailyWageMap.values())
+        .filter(dailyWage => dailyWage > 0)
+        .reduce((total, next) => total + next));
+
+console.log("Total hours using arrow function (Using Reduce):"
+    + Array.from(empDailyHrsMap.values())
+        .reduce(findTotal, 0));
+
+console.log("Total hours using arrow function (Using Filter):"
+    + Array.from(empDailyHrsMap.values())
+        .reduce((total, next) => total + next));
+
+
+//9B show full working days, part working days, no working days
+empDailyHrsMap.forEach((value, key) => {
+    if (value == 8)
+        fullWorkingDays.push(key);
+    else if (value == 4)
+        partWorkingDays.push(key);
+    else nonWorkingDays.push(key);
+});
+console.log("Full Working Days :" + fullWorkingDays);
+console.log("Part Working Days :" + partWorkingDays);
+console.log("Non Working Days :" + nonWorkingDays);
