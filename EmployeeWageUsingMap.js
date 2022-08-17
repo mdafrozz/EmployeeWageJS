@@ -149,3 +149,8 @@ empDailyHrsMap.forEach((value, key) => {
 console.log("Full Working Days :" + fullWorkingDays);
 console.log("Part Working Days :" + partWorkingDays);
 console.log("Non Working Days :" + nonWorkingDays);
+
+//UC 10 Store the day, hours worked and wage earned in single object
+console.log("UC10 Use of JS Object Creation :");
+console.log("Day, Daily hours and wage using single object: ");
+console.log(empDailyWageArr);
