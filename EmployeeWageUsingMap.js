@@ -13,6 +13,7 @@ let empDailyHrsArr = new Array();
 let fullWorkingDays = new Array();
 let partWorkingDays = new Array();
 let nonWorkingDays = new Array();
+let empDailyHrsAndWageArr = new Array();
 
 function getWorkingHours(empCheck) {
     switch (empCheck) {
@@ -46,7 +47,16 @@ while (totalEmpHrs <= MAX_HRS_IN_MONTH && totalWorkingDays < NUM_OF_WORKING_DAYS
         day: totalWorkingDays,
         dailyHrs: empHrs,
         dailyWage: calculateDailyWage(empHrs)
-    })
+    });
+
+    empDailyHrsAndWageArr.push({
+        day: totalWorkingDays,
+        dailyHours: empHrs,
+        dailyWage: calculateDailyWage(empHrs)
+        // toString() {
+        //     return "\n Day " + this.day + " => Daily Working Hours " + this.dailyHours + " Daily wage = " + this.dailyWage
+        // },
+    });
 }
 
 let empWage = totalEmpHrs * WAGE_PER_HOUR;
@@ -180,5 +190,13 @@ let tolHrs = empDailyHrsArr.reduce((tolHrs, dailyWageAndHrsObj) => {
 console.log("Total Hours: " + tolHrs);
 
 //UC11C - Calculate part working days
-let partWorkingDay = empDailyHrsArr.map(dailyHrsAndWages => dailyHrsAndWages.PART_TIME_HOURS);
-console.log("Part Working Days: " + partWorkingDay);
+let partWorkingDayStrArr = empDailyHrsAndWageArr
+    .filter(empDailyHrsAndWageArrObject => empDailyHrsAndWageArrObject.dailyHours == PART_TIME_HOURS)
+    .map(empDailyHrsAndWageArrObject => empDailyHrsAndWageArrObject);
+console.log(partWorkingDayStrArr);
+
+//UC11D - No working days
+let noWorkingDays = empDailyHrsAndWageArr
+    .filter(empDailyHrsAndWageArrObject => empDailyHrsAndWageArrObject.dailyHours == 0)
+    .map(empDailyHrsAndWageArrObject => empDailyHrsAndWageArrObject);
+console.log(noWorkingDays);
