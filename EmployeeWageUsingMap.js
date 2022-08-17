@@ -8,9 +8,8 @@ const NUM_OF_WORKING_DAYS = 20;
 const MAX_HRS_IN_MONTH = 160;
 let empDailyWageArr = new Array();
 let empDailyWageMap = new Map();
-
-//UC9
 let empDailyHrsMap = new Map();
+let empDailyHrsArr = new Array();
 let fullWorkingDays = new Array();
 let partWorkingDays = new Array();
 let nonWorkingDays = new Array();
@@ -37,14 +36,24 @@ while (totalEmpHrs <= MAX_HRS_IN_MONTH && totalWorkingDays < NUM_OF_WORKING_DAYS
     let empCheck = Math.floor(Math.random() * 10) % 3;
     let empHrs = getWorkingHours(empCheck);
     totalEmpHrs += empHrs;
+    let dailyWage = calculateDailyWage(empHrs);
+    empDailyWageArr.push(dailyWage);
     empDailyWageArr.push(calculateDailyWage(empHrs));
-    empDailyWageMap.set(totalWorkingDays, calculateDailyWage(empHrs));
+    empDailyWageMap.set(totalWorkingDays, dailyWage);
+    empDailyHrsMap.set(totalWorkingDays, empHrs);
+
+    empDailyHrsArr.push({
+        day: totalWorkingDays,
+        dailyHrs: empHrs,
+        dailyWage: calculateDailyWage(empHrs)
+    })
 }
 
 let empWage = totalEmpHrs * WAGE_PER_HOUR;
 console.log("UC7 -Total Days:" + totalWorkingDays + "," + " Total Hours:" + totalEmpHrs);
 console.log("Daily wage array:" + empDailyWageArr);
 
+console.log("------------------UC7----------------");
 //7A Calculate total wage using array forEach 
 let totalWage = 0;
 function sum(dailyWage) {
@@ -100,8 +109,8 @@ function totalDaysWorked(numOfDays, dailyWage) {
 let numOfWorkingDays = empDailyWageArr.reduce(totalDaysWorked, 0);
 console.log("7G Total number of days employee worked :" + numOfWorkingDays);
 
-
-
+console.log("------------------UC8----------------");
+//UC8 Store the daily wage with the total wage
 console.log("Store the day and daily wage:");
 console.log(empDailyWageMap);
 
@@ -114,27 +123,28 @@ function totalWagesMap(dailyWage) {
 Array.from(empDailyWageMap.values()).map(totalWagesMap)
 console.log("Total wage using map method :" + totalWagesUsingMap);
 
-
+console.log("------------------UC9----------------");
 //9A total wage and total hours worked
 let findTotal = (totalWage, dailyWage) => {
     return totalWage += dailyWage;
 }
 
-console.log("Total Wage using Arrow function (Using Reduce) :"
+console.log("Total Wage (Using Reduce) :"
     + Array.from(empDailyWageMap.values())
         .reduce(findTotal, 0));
 
-console.log("Total Wage using Arrow function (Using Filter) :"
+console.log("Total Wage (Using Filter) :"
     + Array.from(empDailyWageMap.values())
         .filter(dailyWage => dailyWage > 0)
         .reduce((total, next) => total + next));
 
-console.log("Total hours using arrow function (Using Reduce):"
+console.log("Total hours (Using Reduce):"
     + Array.from(empDailyHrsMap.values())
         .reduce(findTotal, 0));
 
-console.log("Total hours using arrow function (Using Filter):"
+console.log("Total hours (Using Filter): "
     + Array.from(empDailyHrsMap.values())
+        .filter(dailyHrs => dailyHrs > 0)
         .reduce((total, next) => total + next));
 
 
@@ -150,7 +160,25 @@ console.log("Full Working Days :" + fullWorkingDays);
 console.log("Part Working Days :" + partWorkingDays);
 console.log("Non Working Days :" + nonWorkingDays);
 
+
+console.log("------------------UC10----------------");
 //UC 10 Store the day, hours worked and wage earned in single object
-console.log("UC10 Use of JS Object Creation :");
 console.log("Day, Daily hours and wage using single object: ");
 console.log(empDailyWageArr);
+
+console.log("------------------UC11----------------");
+//UC11A - Calculate total wage
+let tolWage = empDailyHrsArr.reduce((tolWage, dailyWageAndHrsObj) => {
+    return tolWage += dailyWageAndHrsObj.dailyWage;
+}, 0)
+console.log("Total Wage: " + tolWage);
+
+//UC11B - Calculate total hours worked
+let tolHrs = empDailyHrsArr.reduce((tolHrs, dailyWageAndHrsObj) => {
+    return tolHrs += dailyWageAndHrsObj.dailyHrs;
+}, 0)
+console.log("Total Hours: " + tolHrs);
+
+//UC11C - Calculate part working days
+let partWorkingDay = empDailyHrsArr.map(dailyHrsAndWages => dailyHrsAndWages.PART_TIME_HOURS);
+console.log("Part Working Days: " + partWorkingDay);
